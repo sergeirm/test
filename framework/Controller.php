@@ -20,7 +20,13 @@ class Controller {
             $backslash_pos = 0;
         }
         $views_dir = strtolower(substr($this->className, $backslash_pos + 1, $controller_pos - $backslash_pos - 1));
-        include($this->app->config['site']['root_path'] . '/app/views/' . $views_dir . '/' . $template . '.php');
+        $views_file = $this->app->config['site']['root_path'] . '/app/views/' . $views_dir . '/' . $template . '.php';
+        
+        ob_start();
+        include($views_file);
+        $content = ob_get_contents();
+        ob_end_clean();
+        include($this->app->config['site']['root_path'] . '/app/views/layouts/common.php');
     }
 
     public function redirect($route) {
